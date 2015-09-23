@@ -15,14 +15,20 @@ app.use(function *(next){
   console.log(this.method + " " + this.url + ", " + ms + " milliseconds");
 })
 
+// Responds to a POST request. Writes to directory with given filename and msg.
+
 app.use(function *(next){
+
   if ('POST' !== this.method) return yield next;
   var body = yield parse(this);
   fs.writeFile(__dirname + '/' + body.filename, body.msg, 'utf8', function(err){
     if (err) console.log(err);
   });
+
   yield next;
 });
+
+// this serves index.html at the base url. Uses fs.readdir to get a list of all available files.
 
 app.use(function *(next){
   if ("/" !== this.path) return yield next;
@@ -33,7 +39,12 @@ app.use(function *(next){
   this.body = Mustache.render(template, {'files': allFiles});
 });
 
+// serves contents of a given file (matching the url path).
+// if the url path is instead a directory, it lets the user know.
+// if the url path has no match in the directory, it yields downstream
+
 app.use(function *(next){
+
   try {
     var fileStat = yield stat(this.path);    
   } catch (e) {
@@ -50,6 +61,8 @@ app.use(function *(next){
     this.body = "<h1>That there is a directory</h1>"
   }
 });
+
+// 404 response
 
 app.use(function *(){
   this.type = 'html';
