@@ -1,0 +1,19 @@
+{
+  "name": "tiny_koa_app",
+  "version": "0.0.0",
+  "description": "lil demo for node study group",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --harmony app.js"
+  },
+  "keywords": [
+    "somethin",
+    "nothin"
+  ],
+  "author": "Colby Somerville",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^1.0.0"
+  }
+}
