@@ -6,11 +6,19 @@
 </head>
 <body>
   <h1>This is not exciting</h1>
-  <form>
-    <input type="text">
+  <form method="POST" action="">
     <label>New file name</label>
-    <input type="text">
+    <input name="filename" type="text">
     <label>Msg</label>
+    <input name="msg" type="text">
+    <button type="submit">Do it.</button>
   </form>
+  <ul>
+    {{#files}}
+      <li>
+        <a href={{.}}>{{.}}</a>
+      </li>
+    {{/files}}
+  </ul>
 </body>
 </html>
