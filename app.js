@@ -15,6 +15,18 @@ app.use(function *(next){
   console.log(this.method + " " + this.url + ", " + ms + " milliseconds");
 })
 
+// for the cookies
+
+app.keys = ['totally', 'secret', 'keys'];
+
+app.use(function *(next){
+  
+  var n = this.cookies.get('views') + 1;
+
+  this.cookies.set('views', (n) ? n : 1);
+  return yield next;
+});
+
 // Responds to a POST request. Writes to directory with given filename and msg.
 
 app.use(function *(next){
@@ -36,7 +48,7 @@ app.use(function *(next){
   var allFiles = yield readdir();
   this.type = 'html';
   this.status = 200;
-  this.body = Mustache.render(template, {'files': allFiles});
+  this.body = Mustache.render(template, {'files': allFiles, 'views': this.cookies.get('views')});
 });
 
 // serves contents of a given file (matching the url path).
