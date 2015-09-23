@@ -21,7 +21,7 @@ app.keys = ['totally', 'secret', 'keys'];
 
 app.use(function *(next){
   
-  var n = this.cookies.get('views') + 1;
+  var n = parseInt(this.cookies.get('views')) + 1;
 
   this.cookies.set('views', (n) ? n : 1);
   return yield next;
@@ -48,7 +48,7 @@ app.use(function *(next){
   var allFiles = yield readdir();
   this.type = 'html';
   this.status = 200;
-  this.body = Mustache.render(template, {'files': allFiles, 'views': this.cookies.get('views')});
+  this.body = Mustache.render(template, {'files': allFiles, 'views': parseInt(this.cookies.get('views')) + 1 || 1});
 });
 
 // serves contents of a given file (matching the url path).
